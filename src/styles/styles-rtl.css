@@ -1,0 +1,167 @@
+body {
+    text-align: right;
+    direction: rtl;
+    font-family: IRANYekan;
+}
+
+.container {
+    direction: rtl;
+}
+
+.navbar-nav {
+    padding-right: 0;
+    margin-right: auto;
+}
+
+.navbar-nav .nav-item {
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+.navbar-brand {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-align: right;
+}
+
+p {
+    text-align: justify;
+    line-height: 1.8;
+}
+
+img {
+    float: right;
+}
+
+.footer {
+    text-align: center;
+}
+
+/* دکمه‌ها */
+.btn {
+    text-align: center;
+    direction: rtl;
+}
+
+/* تغییر جهت فلکس باکس برای RTL */
+.d-flex {
+    /*flex-direction: row-reverse;*/
+}
+
+/* اصلاح لیست‌ها */
+ul, ol {
+    padding-right: 1.5rem;
+}
+
+/* فرم‌ها */
+input, textarea {
+    text-align: right;
+    direction: rtl;
+}
+
+
+
+
+
+.header {
+    direction: rtl;
+    text-align: right;
+}
+
+    .header .container-fluid {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+
+    /* تنظیم لوگو */
+    .header .logo {
+        margin-left: 0;
+        /*margin-right: auto;*/
+        flex-direction: row-reverse;
+    }
+
+        .header .logo img {
+            margin-left: 10px;
+            margin-right: 0;
+        }
+
+/* تنظیم منو */
+.navmenu {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+    .navmenu ul {
+        padding-right: 0;
+    }
+
+        .navmenu ul li {
+            /*float: right;*/
+            margin-left: 15px;
+            margin-right: 0;
+        }
+
+            .navmenu ul li a {
+                text-align: right;
+                font-weight:600;
+            }
+
+    /* اصلاح جهت آیکون‌های dropdown */
+    .navmenu .dropdown > a .bi-chevron-down,
+    .navmenu .listing-dropdown > a .bi-chevron-down {
+        margin-left: 5px;
+        margin-right: 0;
+    }
+
+/* دکمه Get Started */
+.btn-getstarted {
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+/* تنظیمات منو برای موبایل */
+.mobile-nav-toggle {
+    left: 15px;
+    right: auto;
+}
+
+.bi-arrow-left
+{
+    padding-right:10px;
+    margin-bottom:-5px;
+}
+/* تنظیمات برای موبایل */
+@media (max-width: 1200px) {
+    .header .navmenu {
+        margin-left: auto;
+        margin-right :unset;
+    }
+
+    .header .btn-getstarted
+    {
+        order:1;
+
+    }
+    /*.navmenu {
+        position: absolute;
+        top: 100%;
+      
+        background: white;
+        text-align: center;
+        
+        flex-direction: column;
+    }
+
+        .navmenu ul {
+            flex-direction: column;
+        }
+
+    .mobile-nav-toggle {
+        position: absolute;
+        left: 15px;
+        right: auto;
+    }*/
+}

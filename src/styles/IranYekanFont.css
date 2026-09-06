@@ -1,0 +1,61 @@
+/* تعریف فونت‌های ایران یکان */
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebThin.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanThin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebLight.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanLight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebRegular.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanRegular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebMedium.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanMedium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebBold.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanBold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebExtraBold.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebBlack.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanBlack.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'IRANYekan';
+    src: url('/assets/fonts/IranYekan/IRANYekanWebExtraBlack.woff') format('woff'), url('/assets/fonts/IranYekan/IRANYekanExtraBlack.ttf') format('truetype');
+    font-weight: 950;
+    font-style: normal;
+}
+
+/* اعمال فونت در کل سایت */
+body {
+    font-family: 'IRANYekan', tahoma;
+}
