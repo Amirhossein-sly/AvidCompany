@@ -5,21 +5,17 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 const clients = [
-  { id: 1, image: "/assets/img/clients/client-1.png", name: "مشتری ۱" },
-  { id: 2, image: "/assets/img/clients/client-2.png", name: "مشتری ۲" },
-  { id: 3, image: "/assets/img/clients/client-3.png", name: "مشتری ۳" },
-  { id: 4, image: "/assets/img/clients/client-4.png", name: "مشتری ۴" },
-  { id: 5, image: "/assets/img/clients/client-5.png", name: "مشتری ۵" },
-  { id: 6, image: "/assets/img/clients/client-6.png", name: "مشتری ۶" },
-  { id: 7, image: "/assets/img/clients/client-7.png", name: "مشتری ۷" },
-  { id: 8, image: "/assets/img/clients/client-8.png", name: "مشتری ۸" },
+  { id: 1, image: "/assets/img/clients/enmarket-logo-light.webp", name: "نوین بازار" },
+  { id: 2, image: "/assets/img/clients/novintech.svg", name: "نوین تک" },
+  { id: 3, image: "/assets/img/clients/logoDentoral.svg", name: "درندانپزشکی زهرا" },
+  { id: 4, image: "/assets/img/clients/bpums.png", name: "دانشگاه علوم پزشکی بوشهر" },
 ];
 
 const SWIPER_BREAKPOINTS = {
-  320: { slidesPerView: 2, spaceBetween: 40 },
-  480: { slidesPerView: 3, spaceBetween: 60 },
-  640: { slidesPerView: 4, spaceBetween: 80 },
-  992: { slidesPerView: 6, spaceBetween: 120 },
+  320: { slidesPerView: 2, spaceBetween: 15 },
+  480: { slidesPerView: 2, spaceBetween: 25 },
+  640: { slidesPerView: 3, spaceBetween: 30 },
+  992: { slidesPerView: 4, spaceBetween: 40 },
 };
 
 function Clients() {

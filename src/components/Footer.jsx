@@ -1,3 +1,5 @@
+import SiteLink from "./SiteLink";
+
 function Footer() {
     return (
         <footer id="footer" className="footer">
@@ -22,9 +24,9 @@ function Footer() {
             <div className="container ">
                 <div className="row gy-4">
                     <div className="col-lg-3 col-md-6 footer-about">
-                            <a href="/" className="d-flex ">
+                            <SiteLink hash="#hero" className="d-flex ">
                                 <span className="sitename"><img style={{maxHeight: "36px"}} src="/assets/img/LOGO-AVID-T.png" alt="شرکت فناوری هوشمند آوید" /></span>
-                            </a>
+                            </SiteLink>
                             <div className="footer-contact pt-3">
                                 <p>ایران - تهران</p>
                                 <p> خیابان ولیعصر پلاک 110</p>
@@ -35,10 +37,10 @@ function Footer() {
                     <div className="col-lg-2 col-md-3 footer-links">
                         <h4>معرفی آوید</h4>
                         <ul>
-                            <li><i className="bi bi-chevron-right"></i> <a href="#">خانه</a></li>
-                            <li><i className="bi bi-chevron-right"></i> <a href="#">درباره ما</a></li>
-                            <li><i className="bi bi-chevron-right"></i> <a href="#">خدمات</a></li>
-                            <li><i className="bi bi-chevron-right"></i> <a href="#">محصولات</a></li>
+                            <li><i className="bi bi-chevron-right"></i> <SiteLink hash="#hero">خانه</SiteLink></li>
+                            <li><i className="bi bi-chevron-right"></i> <SiteLink hash="#about">درباره ما</SiteLink></li>
+                            <li><i className="bi bi-chevron-right"></i> <SiteLink hash="#services">خدمات</SiteLink></li>
+                            <li><i className="bi bi-chevron-right"></i> <SiteLink hash="#products">محصولات</SiteLink></li>
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-3 footer-links">

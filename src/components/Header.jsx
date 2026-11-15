@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom";
+import SiteLink from "./SiteLink";
 import useHeaderScroll from "../hooks/useHeaderScroll";
 import useMobileMenu from "../hooks/useMobileMenu";
 import useScrollSpy from "../hooks/useScrollSpy";
@@ -11,11 +13,16 @@ const navLinks = [
     { href: "#contact", label: "تماس با ما"},
 ]
 
-// Module-level constant (stable reference across renders) so useScrollSpy's
+// Module-level constants (stable references across renders) so useScrollSpy's
 // effect doesn't re-run/re-attach its scroll listener on every render.
-const NAV_HASHES = navLinks.map((link) => link.href);
+const HOME_HASHES = navLinks.map((link) => link.href);
+// خارج از صفحه‌ی اصلی سکشنی برای رصد کردن وجود ندارد
+const NO_HASHES = [];
 
 function Header() {
+
+    const { pathname } = useLocation();
+    const isHome = pathname === "/";
 
     /*mobile Menu */
     const {
@@ -30,18 +37,24 @@ function Header() {
     /*Nav menu link activate — returns the hash of the section currently
       in view, driven by React state rather than direct classList mutation,
       so it survives Header re-renders (e.g. when the mobile menu toggles). */
-    const activeHash = useScrollSpy(NAV_HASHES);
-    
+    const spyHash = useScrollSpy(isHome ? HOME_HASHES : NO_HASHES);
+
+    // در صفحه‌های محصول، گزینه‌ی «محصولات» فعال نشان داده می‌شود
+    const activeHash = isHome ? spyHash : pathname.startsWith("/products") ? "#products" : "";
+
+    // فقط یک h1 در هر صفحه: در صفحه‌های داخلی عنوان خود صفحه h1 است، نه لوگو
+    const LogoTag = isHome ? "h1" : "div";
+
     return (
         <header id="header" className="header d-flex align-items-center fixed-top">
         {/* Skip link: hidden until keyboard-focused, lets keyboard/screen-reader
             users jump straight past the nav to the main content. */}
-        <a href="#hero" className="visually-hidden-focusable">
+        <a href={isHome ? "#hero" : "#main-content"} className="visually-hidden-focusable">
             رفتن به محتوای اصلی
         </a>
 
         <div className="container-fluid container-xl position-relative d-flex align-items-center">
-            <a className="btn-getstarted flex-md-shrink-0" href="#about">شروع کنید</a>
+            <SiteLink hash="#about" className="btn-getstarted flex-md-shrink-0">شروع کنید</SiteLink>
 
             <nav id="navmenu" className="navmenu"
             onClick={(e) => {
@@ -53,13 +66,13 @@ function Header() {
                 <ul>
                     {navLinks.map((link) => (
                         <li key={link.href}>
-                            <a
-                                href={link.href}
+                            <SiteLink
+                                hash={link.href}
                                 className={activeHash === link.href ? "active" : ""}
-                                aria-current={activeHash === link.href ? "page" : undefined}
+                                aria-current={activeHash === link.href ? (isHome ? "page" : "true") : undefined}
                             >
                                 {link.label}
-                            </a>
+                            </SiteLink>
                         </li>
                     ))}
                 </ul>
@@ -81,11 +94,11 @@ function Header() {
                 ></i>
             </nav>
 
-            <h1 className="sitename logo d-flex align-items-center me-auto">
-                <a href="#hero" >
+            <LogoTag className="sitename logo d-flex align-items-center me-auto">
+                <SiteLink hash="#hero">
                     <img src="/assets/img/LOGO-AVID.png" alt="شرکت فناوری های هوشمند آوید" />
-                </a>
-                </h1>
+                </SiteLink>
+            </LogoTag>
         </div>
     </header>
     );

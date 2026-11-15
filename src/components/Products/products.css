@@ -1,0 +1,466 @@
+/* ==========================================================================
+   Products Section
+   - کاملاً زیر .products-section اسکوپ شده تا روی بخش‌های دیگر سایت اثری نداشته باشد
+   - هدر سکشن از همان .section-title سراسری main.css استفاده می‌کند
+   - فقط از متغیرهای main.css استفاده می‌کند (accent / heading / surface / ...)
+   - Mobile-first؛ نقاط شکست: 576px (تبلت) و 992px (دسکتاپ)
+   ========================================================================== */
+
+.products-section {
+  --pr-border: color-mix(in srgb, var(--default-color) 12%, transparent);
+  --pr-tint: color-mix(in srgb, var(--accent-color) 8%, var(--surface-color));
+  --pr-muted: color-mix(in srgb, var(--default-color), transparent 15%);
+  --pr-shadow: 0px 0 30px rgba(0, 0, 0, 0.1); /* همان سایه .feature-box و .service-item در main.css */
+}
+
+/* --------------------------------------------------------------------------
+   Category filter
+   -------------------------------------------------------------------------- */
+.products-section .products-filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 4px 2px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.products-section .products-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.products-section .products-filter__btn {
+  flex: 0 0 auto;
+  padding: 9px 20px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--heading-color);
+  background: var(--surface-color);
+  border: 1px solid var(--pr-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.25s, background-color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.products-section .products-filter__btn:hover {
+  color: var(--accent-color);
+  border-color: color-mix(in srgb, var(--accent-color) 45%, transparent);
+}
+
+.products-section .products-filter__btn.is-active {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.products-section .products-filter__btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Carousel  (کارت‌ها کنار هم؛ جابه‌جایی با دکمه‌ها، نقطه‌ها یا سوایپ)
+   -------------------------------------------------------------------------- */
+.products-section .products-carousel {
+  position: relative;
+}
+
+/* padding و margin منفی: سایه کارت‌ها بریده نشود، ولی چیدمان تغییری نکند */
+.products-section .products-track {
+  display: flex;
+  gap: 64px; /* بیشتر از فضای سایه، تا سایه اسلاید بعدی در کنار دیده نشود */
+  margin: -30px -30px -10px;
+  padding: 30px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 30px;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.products-section .products-track::-webkit-scrollbar {
+  display: none;
+}
+
+.products-section .products-track:focus-visible {
+  outline: none;
+}
+
+.products-section .products-track:focus-visible .product-card {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.products-section .products-slide {
+  display: flex;
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.products-section .products-slide > .product-card {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---- Controls ---- */
+.products-section .products-controls {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.products-section .products-controls__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--accent-color);
+  background: var(--surface-color);
+  border: 1px solid var(--pr-border);
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: color 0.25s, background-color 0.25s, border-color 0.25s, opacity 0.25s;
+}
+
+.products-section .products-controls__btn:hover:not(:disabled) {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.products-section .products-controls__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.products-section .products-controls__btn:focus-visible,
+.products-section .products-controls__dot:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.products-section .products-controls__dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.products-section .products-controls__dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-color) 25%, transparent);
+  cursor: pointer;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+/* ناحیه لمس بزرگ‌تر برای نقطه‌ها */
+.products-section .products-controls__dot::before {
+  content: "";
+  position: absolute;
+  inset: -10px -4px;
+}
+
+.products-section .products-controls__dot.is-active {
+  width: 26px;
+  background: var(--accent-color);
+}
+
+/* --------------------------------------------------------------------------
+   Card  (موبایل: تصویر بالا، محتوا پایین)
+   -------------------------------------------------------------------------- */
+.products-section .product-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "media"
+    "body";
+  overflow: hidden;
+  background: var(--surface-color);
+  border-radius: 20px;
+  box-shadow: var(--pr-shadow);
+}
+
+/* ---- Media ---- */
+.products-section .product-card__media {
+  grid-area: media;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px 4px;
+}
+
+.products-section .product-card__media img {
+  float: none; /* خنثی‌سازی img { float: right } در styles-rtl.css */
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+/* ---- Body ---- */
+.products-section .product-card__body {
+  grid-area: body;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 18px 22px;
+}
+
+.products-section .product-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 16px;
+  font-size: 24px;
+  color: var(--accent-color);
+  background: var(--pr-tint);
+  border-radius: 14px;
+}
+
+.products-section .product-card__title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.8;
+  text-align: start;
+}
+
+/* موبایل: خلاصه حداکثر ۵ خط (جزئیات کامل در صفحه محصول) */
+.products-section .product-card__summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  margin: 0 0 20px;
+  font-size: 13px;
+  line-height: 2;
+  text-align: start;
+  color: var(--pr-muted);
+}
+
+/* ---- Highlights (موبایل: لیست ردیفی) ---- */
+.products-section .product-card__highlights {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.products-section .product-card__highlight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--heading-color);
+  background: var(--surface-color);
+  border: 1px solid var(--pr-border);
+  border-radius: 12px;
+}
+
+.products-section .product-card__highlight i {
+  flex: 0 0 auto;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--accent-color);
+}
+
+/* ---- CTA ---- */
+.products-section .product-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: auto; /* با ارتفاع‌های متفاوت اسلایدها، دکمه همیشه پایین کارت می‌ماند */
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  border-radius: 999px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.products-section .product-card__cta:hover {
+  color: var(--contrast-color);
+  background: color-mix(in srgb, var(--accent-color) 86%, #000);
+}
+
+.products-section .product-card__cta:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.products-section .product-card__cta i {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.3s;
+}
+
+.products-section .product-card__cta:hover i {
+  transform: translateX(-4px); /* RTL: فلش به سمت چپ حرکت می‌کند */
+}
+
+/* --------------------------------------------------------------------------
+   Tablet  ≥ 576px  (مشخصات ۲×۲، دکمه وسط)
+   -------------------------------------------------------------------------- */
+@media (min-width: 576px) {
+  .products-section .product-card__media {
+    padding: 32px 28px 8px;
+  }
+
+  .products-section .product-card__body {
+    padding: 12px 28px 28px;
+  }
+
+  .products-section .product-card__title {
+    font-size: 20px;
+  }
+
+  /* در تبلت و بالاتر خلاصه کامل نمایش داده می‌شود */
+  .products-section .product-card__summary {
+    display: block;
+    overflow: visible;
+    font-size: 14px;
+  }
+
+  .products-section .product-card__highlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .products-section .product-card__highlight {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    min-height: 96px;
+    padding: 16px 12px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .products-section .product-card__highlight i {
+    font-size: 24px;
+  }
+
+  .products-section .product-card__cta {
+    align-self: center;
+    width: auto;
+    min-width: 220px;
+  }
+}
+
+@media (min-width: 768px) {
+  .products-section .products-filter {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: visible;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Desktop  ≥ 992px  (محتوا راست، تصویر چپ، خط جداکننده بین آن‌ها)
+   -------------------------------------------------------------------------- */
+@media (min-width: 992px) {
+  .products-section .product-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    grid-template-rows: auto;
+    grid-template-areas: "body media";
+    min-height: 460px;
+  }
+
+  .products-section .product-card__media {
+    padding: 40px 36px;
+  }
+
+  .products-section .product-card__body {
+    justify-content: center;
+    padding: 40px 44px;
+  }
+
+  /* خط جداکننده عمودی، با محو شدن در ابتدا و انتها */
+  .products-section .product-card__body::after {
+    content: "";
+    position: absolute;
+    inset-block: 12%;
+    inset-inline-end: 0;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      var(--pr-border) 25%,
+      var(--pr-border) 75%,
+      transparent
+    );
+  }
+
+  .products-section .product-card__icon {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .products-section .product-card__title {
+    font-size: 24px;
+  }
+
+  .products-section .product-card__summary {
+    margin-bottom: 24px;
+    font-size: 15px;
+  }
+
+  .products-section .product-card__highlights {
+    margin-bottom: 26px;
+  }
+
+  .products-section .product-card__cta {
+    margin-top: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .products-section .products-filter__btn,
+  .products-section .products-controls__btn,
+  .products-section .products-controls__dot,
+  .products-section .product-card__cta,
+  .products-section .product-card__cta i {
+    transition: none;
+  }
+}
