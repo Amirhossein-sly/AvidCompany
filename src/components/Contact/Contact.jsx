@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./contact-info.css";
 
 
 function Contact() {
@@ -83,38 +84,31 @@ function Contact() {
             <div className="container" data-aos="fade-up" data-aos-delay="100">
                 <div className="row gy-4">
                     <div className="col-lg-6">
-                        <div className="row gy-4">
-                            <div className="col-md-6">
-                                <div className="info-item" data-aos="fade" data-aos-delay="200">
-                                    <i className="bi bi-geo-alt" aria-hidden="true"></i>
-                                    <h3>آدرس دفتر مرکزی</h3>
-                                    <p>ایران - تهران</p>
-                                    <p> خیابان ولیعصر پلاک 110</p>
-                                </div>
+                        <div className="contact-info-grid">
+                            <div className="info-item" data-aos="fade" data-aos-delay="200">
+                                <i className="bi bi-geo-alt" aria-hidden="true"></i>
+                                <h3>آدرس دفتر مرکزی</h3>
+                                <p>ایران - تهران</p>
+                                <p>خیابان بهشتی، خیابان سرافراز، کوچه سوم، شماره 5</p>
+                                <p>کد پستی: 1587667144</p>
                             </div>{/* End Info Item */}
-                            <div className="col-md-6">
-                                <div className="info-item" data-aos="fade" data-aos-delay="300">
-                                    <i className="bi bi-telephone" aria-hidden="true"></i>
-                                    <h3>تلفن</h3>
-                                    <p style={{direction: "ltr", textAlign: "right"}}>+98 21 8878 8878</p>
-                                    <p style={{direction: "ltr", textAlign: "right"}}>+98 21 8878 8878</p>
-                                </div>
+                            <div className="info-item" data-aos="fade" data-aos-delay="300">
+                                <i className="bi bi-telephone" aria-hidden="true"></i>
+                                <h3>تلفن</h3>
+                                <p style={{direction: "ltr", textAlign: "right"}}>+98 900 220 3086</p>
+                                <p style={{direction: "ltr", textAlign: "right"}}>+98 900 220 3076</p>
                             </div>{/* End Info Item */}
-                            <div className="col-md-6">
-                                <div className="info-item" data-aos="fade" data-aos-delay="400">
-                                    <i className="bi bi-envelope" aria-hidden="true"></i>
-                                    <h3>پست الکترونیک</h3>
-                                    <p>info@AvidCompany.ir</p>
-                                    <p>contact@AvidCompany.ir</p>
-                                </div>
+                            <div className="info-item" data-aos="fade" data-aos-delay="400">
+                                <i className="bi bi-envelope" aria-hidden="true"></i>
+                                <h3>پست الکترونیک</h3>
+                                <p>info@AvidCompany.ir</p>
+                                <p>contact@AvidCompany.ir</p>
                             </div>{/* End Info Item */}
-                            <div className="col-md-6">
-                                <div className="info-item" data-aos="fade" data-aos-delay="500">
-                                    <i className="bi bi-clock" aria-hidden="true"></i>
-                                    <h3>ساعات کار</h3>
-                                    <p>شنبه - چهارشنبه</p>
-                                    <p>9:00AM - 05:00PM</p>
-                                </div>
+                            <div className="info-item" data-aos="fade" data-aos-delay="500">
+                                <i className="bi bi-clock" aria-hidden="true"></i>
+                                <h3>ساعات کار</h3>
+                                <p>شنبه - چهارشنبه</p>
+                                <p>9:00AM - 05:00PM</p>
                             </div>{/* End Info Item */}
                         </div>
                     </div>

@@ -109,24 +109,37 @@
   min-width: 0;
 }
 
-/* ---- Controls ---- */
+/* ---- Stage: فقط اسلایدر + فلش‌های دو طرف (نقطه‌ها زیر آن، در .products-controls) ---- */
+.products-section .products-stage {
+  position: relative;
+}
+
+/* ---- Dots ---- */
 .products-section .products-controls {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
   margin-top: 8px;
 }
 
-.products-section .products-controls__btn {
+/* ---- Arrows ----
+   موبایل: روی دو طرف ناحیه‌ی تصویر کارت (بیرون کارت جا نیست؛ کارت کوچک نمی‌شود)
+   ≥ 576px: وسط ارتفاع کارت، نصفه روی لبه‌ی کارت و نصفه بیرون آن */
+.products-section .products-arrow {
+  position: absolute;
+  z-index: 2;
+  /* وسط تصویر در موبایل: 30px (padding بالای track که stage را بالا می‌برد) + 24px (padding تصویر)
+     + نصف ارتفاع تصویر (نسبت ۴:۳ و عرض = عرض صفحه منهای ۶۰px) */
+  top: calc(54px + (100vw - 60px) * 0.375);
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   padding: 0;
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1;
   color: var(--accent-color);
   background: var(--surface-color);
@@ -137,19 +150,27 @@
   transition: color 0.25s, background-color 0.25s, border-color 0.25s, opacity 0.25s;
 }
 
-.products-section .products-controls__btn:hover:not(:disabled) {
+.products-section .products-arrow:hover:not(:disabled) {
   color: var(--contrast-color);
   background: var(--accent-color);
   border-color: var(--accent-color);
 }
 
-.products-section .products-controls__btn:disabled {
+.products-section .products-arrow:disabled {
   opacity: 0.4;
   cursor: not-allowed;
   box-shadow: none;
 }
 
-.products-section .products-controls__btn:focus-visible,
+.products-section .products-arrow--prev {
+  inset-inline-start: 8px;
+}
+
+.products-section .products-arrow--next {
+  inset-inline-end: 8px;
+}
+
+.products-section .products-arrow:focus-visible,
 .products-section .products-controls__dot:focus-visible {
   outline: 2px solid var(--accent-color);
   outline-offset: 3px;
@@ -338,6 +359,22 @@
    Tablet  ≥ 576px  (مشخصات ۲×۲، دکمه وسط)
    -------------------------------------------------------------------------- */
 @media (min-width: 576px) {
+  /* فلش‌ها: وسط ارتفاع کارت، نصفه بیرون از لبه‌ی کارت */
+  .products-section .products-arrow {
+    top: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .products-section .products-arrow--prev {
+    inset-inline-start: -22px;
+  }
+
+  .products-section .products-arrow--next {
+    inset-inline-end: -22px;
+  }
+
   .products-section .product-card__media {
     padding: 32px 28px 8px;
   }
@@ -457,7 +494,7 @@
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .products-section .products-filter__btn,
-  .products-section .products-controls__btn,
+  .products-section .products-arrow,
   .products-section .products-controls__dot,
   .products-section .product-card__cta,
   .products-section .product-card__cta i {

@@ -9,6 +9,7 @@ const clients = [
   { id: 2, image: "/assets/img/clients/novintech.svg", name: "نوین تک" },
   { id: 3, image: "/assets/img/clients/logoDentoral.svg", name: "درندانپزشکی زهرا" },
   { id: 4, image: "/assets/img/clients/bpums.png", name: "دانشگاه علوم پزشکی بوشهر" },
+  { id: 5, image: "/assets/img/clients/Arme-Moein-Site.png", name: "فروشگاه تجهیزات زیبایی معین مد" },
 ];
 
 const SWIPER_BREAKPOINTS = {

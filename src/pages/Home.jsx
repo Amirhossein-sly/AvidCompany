@@ -7,7 +7,7 @@ import FAQ from "../components/FAQ";
 import Portfolio from "../components/Portfolio";
 import Testimonials from "../components/Testimonials";
 import Clients from "../components/Clients";
-import Contact from "../components/Contact";
+import Contact from "../components/Contact/Contact";
 import Products from "../components/Products/Products";
 
 // هدر، فوتر و ScrollTop حالا در components/Layout.jsx هستند و بین همه‌ی صفحه‌ها مشترک‌اند
@@ -28,13 +28,11 @@ export default function Home() {
         <Services/>
 
         <FAQ/>
-
-        <Portfolio/>
-
-        <Testimonials/>
-
+        
         <Clients/>
-
+        
+        <Testimonials/>
+        
         <Contact/>
 
     </main>

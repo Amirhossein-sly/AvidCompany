@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ProductCard from "./ProductCard";
-import { categories, products, productsSection } from "../../data/products.data";
+import { categories, getProductsByCategory, productsSection } from "../../data/products.data";
 import "./products.css";
 
 const toFa = (n) => n.toLocaleString("fa-IR");
@@ -14,20 +14,12 @@ function Products() {
   const tabs = useMemo(
     () => [
       { key: "all", label: productsSection.allLabel },
-      ...categories.filter((category) =>
-        products.some((product) => product.categories.includes(category.key))
-      ),
+      ...categories.filter((category) => getProductsByCategory(category.key).length > 0),
     ],
     []
   );
 
-  const visibleProducts = useMemo(
-    () =>
-      activeCategory === "all"
-        ? products
-        : products.filter((product) => product.categories.includes(activeCategory)),
-    [activeCategory]
-  );
+  const visibleProducts = useMemo(() => getProductsByCategory(activeCategory), [activeCategory]);
 
   const total = visibleProducts.length;
 
@@ -114,35 +106,50 @@ function Products() {
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          {/* key: با تغییر فیلتر، اسلایدر از اولین محصول شروع می‌شود */}
-          <div className="products-track" key={activeCategory} ref={trackRef} tabIndex={0}>
-            {visibleProducts.map((product, index) => (
-              <div
-                className="products-slide"
-                key={product.slug}
-                data-index={index}
-                role="group"
-                aria-roledescription="slide"
-                aria-label={`${toFa(index + 1)} از ${toFa(total)}`}
-              >
-                <ProductCard product={product} ctaLabel={productsSection.ctaLabel} />
-              </div>
-            ))}
+          <div className="products-stage">
+            {/* key: با تغییر فیلتر، اسلایدر از اولین محصول شروع می‌شود */}
+            <div className="products-track" key={activeCategory} ref={trackRef} tabIndex={0}>
+              {visibleProducts.map((product, index) => (
+                <div
+                  className="products-slide"
+                  key={product.slug}
+                  data-index={index}
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${toFa(index + 1)} از ${toFa(total)}`}
+                >
+                  <ProductCard product={product} ctaLabel={productsSection.ctaLabel} />
+                </div>
+              ))}
+            </div>
+
+            {total > 1 && (
+              <>
+                {/* فلش‌ها کنار کارت‌ها هستند. RTL: راست = قبلی، چپ = بعدی */}
+                <button
+                  type="button"
+                  className="products-arrow products-arrow--prev"
+                  onClick={() => goTo(activeIndex - 1)}
+                  disabled={activeIndex === 0}
+                  aria-label="محصول قبلی"
+                >
+                  <i className="bi bi-chevron-right" aria-hidden="true"></i>
+                </button>
+                <button
+                  type="button"
+                  className="products-arrow products-arrow--next"
+                  onClick={() => goTo(activeIndex + 1)}
+                  disabled={activeIndex === total - 1}
+                  aria-label="محصول بعدی"
+                >
+                  <i className="bi bi-chevron-left" aria-hidden="true"></i>
+                </button>
+              </>
+            )}
           </div>
 
           {total > 1 && (
             <div className="products-controls">
-              {/* RTL: دکمه راست = قبلی، دکمه چپ = بعدی */}
-              <button
-                type="button"
-                className="products-controls__btn"
-                onClick={() => goTo(activeIndex - 1)}
-                disabled={activeIndex === 0}
-                aria-label="محصول قبلی"
-              >
-                <i className="bi bi-chevron-right" aria-hidden="true"></i>
-              </button>
-
               <div className="products-controls__dots">
                 {visibleProducts.map((product, index) => (
                   <button
@@ -155,16 +162,6 @@ function Products() {
                   ></button>
                 ))}
               </div>
-
-              <button
-                type="button"
-                className="products-controls__btn"
-                onClick={() => goTo(activeIndex + 1)}
-                disabled={activeIndex === total - 1}
-                aria-label="محصول بعدی"
-              >
-                <i className="bi bi-chevron-left" aria-hidden="true"></i>
-              </button>
             </div>
           )}
         </div>

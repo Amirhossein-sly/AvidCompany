@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import AOS from "aos";
 import { Link, useParams } from "react-router-dom";
-import { categories, products } from "../../data/products.data";
+import { getCategoriesOfProduct, products } from "../../data/products.data";
 import "./product-detail.css";
 
 const toFa = (n) => n.toLocaleString("fa-IR");
-
-const categoryLabels = Object.fromEntries(categories.map((c) => [c.key, c.label]));
 
 const toProducts = { pathname: "/", hash: "#products" };
 const toContact = { pathname: "/", hash: "#contact" };
@@ -38,26 +36,44 @@ function SectionTitle({ label, title }) {
   );
 }
 
-/* سکشن لیستی (مزایا / کاربردها) به سبک باکس‌های Features */
+/* سکشن لیستی (مزایا / کاربردها) به سبک باکس‌های Features
+   هر آیتم یا متن ساده است یا { title, text }؛ block.intro (اختیاری) جمله‌ی معرفی بالای لیست */
 function ChecklistSection({ label, block, icon = "bi-check" }) {
   return (
     <section className="pd-checklist section">
       <SectionTitle label={label} title={block.title} />
       <div className="container">
+        {block.intro && (
+          <p className="pd-checklist__intro" data-aos="fade-up">
+            {block.intro}
+          </p>
+        )}
         <div className="row pd-grid justify-content-center">
-          {block.items.map((item, i) => (
-            <div
-              className="col-md-6 col-xl-4"
-              key={item}
-              data-aos="fade-up"
-              data-aos-delay={100 + (i % 3) * 100}
-            >
-              <div className="pd-box">
-                <i className={`bi ${icon}`} aria-hidden="true"></i>
-                <h3>{item}</h3>
+          {block.items.map((item, i) => {
+            const detailed = typeof item === "object";
+            const heading = detailed ? item.title : item;
+
+            return (
+              <div
+                className="col-md-6 col-xl-4"
+                key={heading}
+                data-aos="fade-up"
+                data-aos-delay={100 + (i % 3) * 100}
+              >
+                <div className={`pd-box${detailed ? " pd-box--detailed" : ""}`}>
+                  <i className={`bi ${icon}`} aria-hidden="true"></i>
+                  {detailed ? (
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                  ) : (
+                    <h3>{heading}</h3>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -189,8 +205,8 @@ function ProductDetail() {
             <div className="pd-hero__text">
               <div className="pd-hero__head" data-aos="fade-up" data-aos-delay="100">
                 <div className="pd-tags">
-                  {product.categories.map((key) => (
-                    <span className="pd-tag" key={key}>{categoryLabels[key]}</span>
+                  {getCategoriesOfProduct(product.slug).map((category) => (
+                    <span className="pd-tag" key={category.key}>{category.label}</span>
                   ))}
                 </div>
                 <h1>{title}</h1>
@@ -392,7 +408,7 @@ function ProductDetail() {
           <div className="pd-cta__card">
             <div>
               <h2>برای این راهکار با ما صحبت کنید</h2>
-              <p>{closing}</p>
+              {closing && <p>{closing}</p>}
             </div>
             <div className="pd-cta__actions">
               <Link className="pd-btn pd-btn--primary" to={toContact}>

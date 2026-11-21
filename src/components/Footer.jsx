@@ -29,9 +29,10 @@ function Footer() {
                             </SiteLink>
                             <div className="footer-contact pt-3">
                                 <p>ایران - تهران</p>
-                                <p> خیابان ولیعصر پلاک 110</p>
-                                <p className="mt-3" style={{direction: "ltr", textAlign: "right"}}> <span>+98 21 88787878</span> <strong>:تلفن</strong></p>
+                                <p>خیابان بهشتی، خیابان سرافراز، کوچه سوم، شماره 5</p>
+                                <p className="mt-3" style={{direction: "ltr", textAlign: "right"}}> <span>+98 900 220 3086</span> <strong>:تلفن</strong></p>
                                 <p><strong>ایمیل:</strong> <span>info@AvidCompany.ir</span></p>
+                                <p><strong>کد پستی:</strong> <span>1587667144</span></p>
                             </div>
                     </div>
                     <div className="col-lg-2 col-md-3 footer-links">
@@ -60,7 +61,7 @@ function Footer() {
                             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="توییتر آوید"><i className="bi bi-twitter-x"></i></a>
                             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="فیسبوک آوید"><i className="bi bi-facebook"></i></a>
                             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="اینستاگرام آوید"><i className="bi bi-instagram"></i></a>
-                            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="لینکدین آوید"><i className="bi bi-linkedin"></i></a>
+                            <a href="https://www.linkedin.com/company/avidcompany/" target="_blank" rel="noopener noreferrer" aria-label="لینکدین آوید"><i className="bi bi-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
@@ -75,11 +76,11 @@ function Footer() {
                     </p>
                     <br / >
                     <p style={{direction: "ltr", textAlign: "center"}}>
-                        Copyright © 2025 
+                        Copyright © 2026 
                         <a href="https://avidcompany.ir">
                             <strong className="px-1 sitename"> Avid</strong>
 </a>
-                            AI Technology ® , All Rights Reserved.
+                            Technology ® , All Rights Reserved.
 </p>
                 </div>
             </div>
