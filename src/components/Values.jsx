@@ -1,22 +1,21 @@
+import "./values-icon.css";
+
 const values = [
   {
     id: 1,
-    image: "/assets/img/values-1.png",
-    alt: "نماد رضایت مشتریان آوید",
+    icon: "bi-hand-thumbs-up",
     title: "رضایت مشتریان",
     text: "در آوید، رضایت مشتریان فقط یک هدف نیست، بلکه تعهدی است که در هر راهکار هوشمند، هر محصول و هر خدمت ما جاریست!",
   },
   {
     id: 2,
-    image: "/assets/img/values-2.png",
-    alt: "نماد خلق ارزش برای مشتریان آوید",
+    icon: "bi-gem",
     title: "خلق ارزش برای مشتری",
     text: "ما در آوید، فقط محصولات را نمی‌سازیم، بلکه آینده‌ای هوشمندتر و کارآمدتر و با ارزش تر برای شما خلق می‌کنیم",
   },
   {
     id: 3,
-    image: "/assets/img/values-3.png",
-    alt: "نماد امنیت و سادگی در محصولات آوید",
+    icon: "bi-shield-check",
     title: "امنیت، توسعه و سادگی در کنار هم",
     text: "ما در آوید، پیچیدگی‌ها را کنار می‌زنیم تا شما با خیالی آسوده، کسب و کارتان را توسعه دهید و رشد کنید!",
   },
@@ -40,8 +39,12 @@ function Values() {
                             data-aos-delay={100 * (index + 1)}
                         >
                             <div className="card">
-                                <img src={value.image} className="img-fluid" alt={value.alt} loading="lazy" />
-                                <h3>{value.title}</h3>
+                                <div className="values-head">
+                                    <span className="values-icon" aria-hidden="true">
+                                        <i className={`bi ${value.icon}`}></i>
+                                    </span>
+                                    <h3>{value.title}</h3>
+                                </div>
                                 <p>{value.text}</p>
                             </div>
                         </div>

@@ -20,7 +20,7 @@ function About() {
                         </div>
                     </div>
                     <div className="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-                        <img src="/assets/img/about.jpg" className="img-fluid" alt="تیم فناوری آوید در حال کار روی راهکارهای نرم‌افزاری" />
+                        <img src="/assets/img/Abstract-image-of-avid-company.webp" className="img-fluid" alt="تیم فناوری آوید در حال کار روی راهکارهای نرم‌افزاری" />
                     </div>
                 </div>
             </div>

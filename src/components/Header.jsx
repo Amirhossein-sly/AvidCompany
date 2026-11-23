@@ -9,7 +9,7 @@ const navLinks = [
     { href: "#about", label: "درباره ما"},
     { href: "#products", label: "محصولات"},
     { href: "#services", label: "خدمات"},
-    { href: "#portfolio", label: "چشم انداز"},
+    { href: "#clients", label: "مشتریان"},
     { href: "#contact", label: "تماس با ما"},
 ]
 

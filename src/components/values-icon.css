@@ -1,0 +1,69 @@
+/* ==========================================================================
+   کارت‌های «ارزش‌های آوید»: آیکن و عنوان روبروی هم (آیکن راست، عنوان کنار آن)
+   - آیکن تک‌رنگ آبی روی کاشی کم‌رنگ؛ هم‌سبک آیکن‌های .feature-box سایت
+   - بقیه‌ی استایل کارت (سایه، padding، متن) همان .values .card در main.css است
+   ========================================================================== */
+
+.values .card .values-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.values .card .values-icon {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--accent-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 92%);
+  border-radius: 16px;
+  transition: 0.3s;
+}
+
+/* عنوان کنار آیکن؛ margin و اندازه‌ی فونت اصلی .values .card h3 برای حالت زیر هم بود */
+.values .card .values-head h3 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.7;
+  text-align: start;
+}
+
+/* سه کارت کنار هم: ارتفاع ردیف عنوان را برابر نگه می‌داریم (جای دو خط عنوان)
+   تا متن همه‌ی کارت‌ها از یک تراز شروع شود */
+@media (min-width: 992px) {
+  .values .card .values-head {
+    min-height: 68px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .values .card .values-head {
+    min-height: 76px;
+  }
+
+  .values .card .values-head h3 {
+    font-size: 19px;
+  }
+}
+
+/* hover فقط روی دستگاه‌هایی که واقعاً hover دارند (در لمسی گیر نمی‌کند) */
+@media (hover: hover) {
+  .values .card:hover .values-icon {
+    color: var(--contrast-color);
+    background: var(--accent-color);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .values .card .values-icon {
+    transition: none;
+  }
+}

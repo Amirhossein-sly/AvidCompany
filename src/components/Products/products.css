@@ -63,50 +63,44 @@
 }
 
 /* --------------------------------------------------------------------------
-   Carousel  (کارت‌ها کنار هم؛ جابه‌جایی با دکمه‌ها، نقطه‌ها یا سوایپ)
+   Carousel  (Swiper: حلقه‌ی بی‌پایان، حرکت خودکار هر ۴ ثانیه، جابه‌جایی با فلش‌ها، نقطه‌ها یا سوایپ)
    -------------------------------------------------------------------------- */
 .products-section .products-carousel {
   position: relative;
 }
 
-/* padding و margin منفی: سایه کارت‌ها بریده نشود، ولی چیدمان تغییری نکند */
-.products-section .products-track {
-  display: flex;
-  gap: 64px; /* بیشتر از فضای سایه، تا سایه اسلاید بعدی در کنار دیده نشود */
+/* Swiper: padding و margin منفی تا سایه‌ی کارت‌ها بریده نشود (overflow پیش‌فرض Swiper
+   مخفی است) ولی چیدمان تغییری نکند. SLIDE_GAP در Products.jsx باید از این 30px بزرگ‌تر
+   باشد تا کارت بعدی در حاشیه دیده نشود. */
+.products-section .products-swiper {
   margin: -30px -30px -10px;
   padding: 30px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 30px;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
 }
 
-.products-section .products-track::-webkit-scrollbar {
-  display: none;
-}
-
-.products-section .products-track:focus-visible {
-  outline: none;
-}
-
-.products-section .products-track:focus-visible .product-card {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 3px;
-}
-
-.products-section .products-slide {
+.products-section .products-swiper .swiper-slide.products-slide {
   display: flex;
-  flex: 0 0 100%;
-  min-width: 0;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  height: auto; /* هم‌قد شدن کارت‌ها در یک ردیف */
 }
 
 .products-section .products-slide > .product-card {
   flex: 1;
   min-width: 0;
+}
+
+/* ---- Body: انتقال نرم هنگام تعویض فیلتر ----
+   کارت‌های قبلی محو می‌شوند (.is-switching)، محصولات جدید جایگزین و نرم ظاهر می‌شوند
+   و ارتفاع بخش به‌جای پرش، با transition تغییر می‌کند (inline height از Products.jsx).
+   flow-root: margin منفی Swiper از بیرون این باکس رد نشود تا انیمیشن ارتفاع درست کار کند. */
+.products-section .products-body {
+  display: flow-root;
+  transition: opacity 0.35s ease, transform 0.35s ease, height 0.4s ease;
+}
+
+.products-section .products-body.is-switching {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition-duration: 0.2s, 0.2s, 0.4s; /* opacity، transform، height */
 }
 
 /* ---- Stage: فقط اسلایدر + فلش‌های دو طرف (نقطه‌ها زیر آن، در .products-controls) ---- */
@@ -150,16 +144,10 @@
   transition: color 0.25s, background-color 0.25s, border-color 0.25s, opacity 0.25s;
 }
 
-.products-section .products-arrow:hover:not(:disabled) {
+.products-section .products-arrow:hover {
   color: var(--contrast-color);
   background: var(--accent-color);
   border-color: var(--accent-color);
-}
-
-.products-section .products-arrow:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  box-shadow: none;
 }
 
 .products-section .products-arrow--prev {
@@ -493,6 +481,7 @@
    Reduced motion
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  .products-section .products-body,
   .products-section .products-filter__btn,
   .products-section .products-arrow,
   .products-section .products-controls__dot,

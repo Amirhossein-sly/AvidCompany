@@ -1,14 +1,37 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Autoplay, Keyboard } from "swiper/modules";
+import "swiper/css";
 import ProductCard from "./ProductCard";
 import { categories, getProductsByCategory, productsSection } from "../../data/products.data";
 import "./products.css";
 
+// هر چند میلی‌ثانیه یک بار خودکار به محصول بعدی می‌رود
+const AUTOPLAY_DELAY = 4000;
+// فاصله‌ی بین اسلایدها (باید از padding سایه‌ی .products-swiper در products.css بزرگ‌تر باشد)
+const SLIDE_GAP = 64;
+// مدت محو شدن کارت‌های قبلی هنگام عوض شدن فیلتر (باید با .products-body.is-switching در products.css یکی باشد)
+const SWITCH_OUT_MS = 200;
+// مدت انیمیشن ارتفاع هنگام عوض شدن فیلتر (باید با transition ارتفاع .products-body یکی باشد)
+const HEIGHT_MS = 400;
+
 const toFa = (n) => n.toLocaleString("fa-IR");
 
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 function Products() {
+  // activeCategory: تب انتخاب‌شده (فوراً فعال می‌شود)
+  // shownCategory: محصولاتی که الان نمایش داده می‌شوند (بعد از محو شدن کارت‌های قبلی عوض می‌شود)
   const [activeCategory, setActiveCategory] = useState("all");
+  const [shownCategory, setShownCategory] = useState("all");
+  const [isSwitching, setIsSwitching] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const trackRef = useRef(null);
+  const [reduceMotion] = useState(prefersReducedMotion);
+  const swiperRef = useRef(null);
+  const carouselRef = useRef(null);
+  const bodyRef = useRef(null);
+  const switchTimer = useRef(null);
+  const heightBeforeSwitch = useRef(null);
 
   // فقط دسته‌هایی که حداقل یک محصول دارند
   const tabs = useMemo(
@@ -19,53 +42,92 @@ function Products() {
     []
   );
 
-  const visibleProducts = useMemo(() => getProductsByCategory(activeCategory), [activeCategory]);
+  const visibleProducts = useMemo(() => getProductsByCategory(shownCategory), [shownCategory]);
 
   const total = visibleProducts.length;
+  const canLoop = total > 1;
+  // کاربرانی که حرکت کم را در سیستم‌عامل انتخاب کرده‌اند، حرکت خودکار ندارند
+  const shouldAutoplay = canLoop && !reduceMotion;
 
-  // تشخیص اسلایدی که الان در دید است (برای دکمه‌ها و نقطه‌ها؛ با سوایپ هم کار می‌کند)
+  // وقتی بخش محصولات از صفحه بیرون است، حرکت خودکار متوقف می‌شود
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return undefined;
+    const element = carouselRef.current;
+    if (!element || !shouldAutoplay) return undefined;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveIndex(Number(entry.target.dataset.index));
-          }
-        });
+      ([entry]) => {
+        const player = swiperRef.current?.autoplay;
+        if (!player) return;
+        if (entry.isIntersecting) player.start();
+        else player.stop();
       },
-      { root: track, threshold: 0.6 }
+      { threshold: 0.2 }
     );
 
-    Array.from(track.children).forEach((slide) => observer.observe(slide));
+    observer.observe(element);
     return () => observer.disconnect();
-  }, [visibleProducts]);
+  }, [shownCategory, shouldAutoplay]);
 
-  // جابه‌جایی افقی؛ هم در RTL و هم LTR درست کار می‌کند
-  const goTo = useCallback((index) => {
-    const track = trackRef.current;
-    const slide = track?.children[index];
-    if (!slide) return;
+  // ارتفاع بخش بعد از تعویض محصولات به‌جای پرش، نرم تغییر می‌کند
+  useLayoutEffect(() => {
+    const element = bodyRef.current;
+    const from = heightBeforeSwitch.current;
+    heightBeforeSwitch.current = null;
+    if (!element || from === null) return undefined;
 
-    const style = getComputedStyle(track);
-    const trackRect = track.getBoundingClientRect();
-    const slideRect = slide.getBoundingClientRect();
-    const padding = parseFloat(style.paddingInlineStart) || 0;
-    const delta =
-      style.direction === "rtl"
-        ? slideRect.right - (trackRect.right - padding)
-        : slideRect.left - (trackRect.left + padding);
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    element.style.height = "auto";
+    const to = element.offsetHeight;
+    if (Math.abs(to - from) < 2) {
+      element.style.height = "";
+      return undefined;
+    }
 
-    track.scrollBy({ left: delta, behavior: reduceMotion ? "auto" : "smooth" });
-  }, []);
+    element.style.height = `${from}px`;
+    void element.offsetHeight; // reflow: شروع انیمیشن از ارتفاع قبلی
+    element.style.height = `${to}px`;
 
+    const timer = setTimeout(() => {
+      element.style.height = "";
+    }, HEIGHT_MS + 50);
+
+    return () => {
+      clearTimeout(timer);
+      element.style.height = "";
+    };
+  }, [shownCategory]);
+
+  useEffect(() => () => clearTimeout(switchTimer.current), []);
+
+  const goPrev = () => swiperRef.current?.slidePrev();
+  const goNext = () => swiperRef.current?.slideNext();
+  const goTo = (index) => swiperRef.current?.slideToLoop(index);
+
+  // با فوکوس کیبورد روی دکمه‌ها (نه کلیک ماوس) حرکت خودکار موقتاً می‌ایستد
+  const pauseOnKeyboardFocus = (event) => {
+    if (event.target.matches?.(":focus-visible")) swiperRef.current?.autoplay?.pause?.();
+  };
+  const resumeAfterBlur = () => swiperRef.current?.autoplay?.resume?.();
+
+  // تعویض فیلتر: کارت‌های قبلی نرم محو می‌شوند، محصولات دسته‌ی جدید جایگزین و نرم ظاهر می‌شوند
   const handleFilter = (key) => {
     if (key === activeCategory) return;
+
     setActiveCategory(key);
     setActiveIndex(0);
+    clearTimeout(switchTimer.current);
+
+    if (reduceMotion) {
+      setShownCategory(key);
+      return;
+    }
+
+    heightBeforeSwitch.current = bodyRef.current ? bodyRef.current.offsetHeight : null;
+    setIsSwitching(true);
+    switchTimer.current = setTimeout(() => {
+      setShownCategory(key);
+      setActiveIndex(0);
+      setIsSwitching(false);
+    }, SWITCH_OUT_MS);
   };
 
   return (
@@ -100,37 +162,60 @@ function Products() {
 
         <div
           className="products-carousel"
+          ref={carouselRef}
           role="region"
           aria-roledescription="carousel"
           aria-label="محصولات آوید"
           data-aos="fade-up"
           data-aos-delay="200"
+          onFocus={pauseOnKeyboardFocus}
+          onBlur={resumeAfterBlur}
         >
+          <div
+            ref={bodyRef}
+            className={`products-body${isSwitching ? " is-switching" : ""}`}
+          >
           <div className="products-stage">
-            {/* key: با تغییر فیلتر، اسلایدر از اولین محصول شروع می‌شود */}
-            <div className="products-track" key={activeCategory} ref={trackRef} tabIndex={0}>
-              {visibleProducts.map((product, index) => (
-                <div
-                  className="products-slide"
-                  key={product.slug}
-                  data-index={index}
-                  role="group"
-                  aria-roledescription="slide"
-                  aria-label={`${toFa(index + 1)} از ${toFa(total)}`}
-                >
+            {/* key: با تغییر فیلتر، اسلایدر از اولین محصول آن دسته شروع می‌شود */}
+            <Swiper
+              key={shownCategory}
+              className="products-swiper"
+              dir="rtl"
+              modules={[A11y, Autoplay, Keyboard]}
+              slidesPerView={1}
+              spaceBetween={SLIDE_GAP}
+              speed={reduceMotion ? 0 : 600}
+              loop={canLoop}
+              autoplay={
+                shouldAutoplay
+                  ? { delay: AUTOPLAY_DELAY, disableOnInteraction: false, pauseOnMouseEnter: true }
+                  : false
+              }
+              keyboard={{ enabled: true, onlyInViewport: true }}
+              a11y={{
+                prevSlideMessage: "محصول قبلی",
+                nextSlideMessage: "محصول بعدی",
+                slideLabelMessage: "{{index}} از {{slidesLength}}",
+              }}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+            >
+              {visibleProducts.map((product) => (
+                <SwiperSlide key={product.slug} className="products-slide">
                   <ProductCard product={product} ctaLabel={productsSection.ctaLabel} />
-                </div>
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
 
-            {total > 1 && (
+            {canLoop && (
               <>
-                {/* فلش‌ها کنار کارت‌ها هستند. RTL: راست = قبلی، چپ = بعدی */}
+                {/* فلش‌ها کنار کارت‌ها هستند. RTL: راست = قبلی، چپ = بعدی (بعد از آخرین محصول دوباره اولی می‌آید) */}
                 <button
                   type="button"
                   className="products-arrow products-arrow--prev"
-                  onClick={() => goTo(activeIndex - 1)}
-                  disabled={activeIndex === 0}
+                  onClick={goPrev}
                   aria-label="محصول قبلی"
                 >
                   <i className="bi bi-chevron-right" aria-hidden="true"></i>
@@ -138,8 +223,7 @@ function Products() {
                 <button
                   type="button"
                   className="products-arrow products-arrow--next"
-                  onClick={() => goTo(activeIndex + 1)}
-                  disabled={activeIndex === total - 1}
+                  onClick={goNext}
                   aria-label="محصول بعدی"
                 >
                   <i className="bi bi-chevron-left" aria-hidden="true"></i>
@@ -148,7 +232,7 @@ function Products() {
             )}
           </div>
 
-          {total > 1 && (
+          {canLoop && (
             <div className="products-controls">
               <div className="products-controls__dots">
                 {visibleProducts.map((product, index) => (
@@ -164,6 +248,7 @@ function Products() {
               </div>
             </div>
           )}
+          </div>
         </div>
       </div>
     </section>
